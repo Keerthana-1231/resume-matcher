@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Resume Matcher</title>
+</head>
+<body>
+  <h2>Resume Matcher</h2>
+
+  <form action="/" method="post" enctype="multipart/form-data">
+    <label>Upload Resume (Text File):</label><br>
+    <input type="file" name="resume"><br><br>
+
+    <label>Paste Job Description:</label><br>
+    <textarea name="job_desc" rows="8" cols="40"></textarea><br><br>
+
+    <input type="submit" value="Match Score">
+  </form>
+
+  {% if score %}
+    <h3>Similarity Score: {{ score }}%</h3>
+  {% endif %}
+</body>
+</html>

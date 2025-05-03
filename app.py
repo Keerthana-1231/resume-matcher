@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template,request
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -22,9 +22,13 @@ def match():
     
     # Calculate the cosine similarity
     similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
+    
+    #convert the similarity into percentage
+    similarity_percentage = round(similarity[0][0] * 100, 2)
+    similarity_str = f"{similarity_percentage}%"
 
     # Return the similarity score to the user
-    return render_template('index.html', similarity=similarity[0][0])
+    return render_template('index.html', similarity=similarity_str)
 
 if __name__ == '__main__':
     app.run(debug=True)

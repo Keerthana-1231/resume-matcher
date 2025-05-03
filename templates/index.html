@@ -1,24 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AI Resume Matcher</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Matcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
 </head>
 <body>
-  <h2>Resume Matcher</h2>
 
-  <form action="/" method="post" enctype="multipart/form-data">
-    <label>Upload Resume (Text File):</label><br>
-    <input type="file" name="resume"><br><br>
+    <h1>Resume Matcher</h1>
 
-    <label>Paste Job Description:</label><br>
-    <textarea name="job_desc" rows="8" cols="40"></textarea><br><br>
+    <div class="container">
+        <form action="/match" method="POST">
+            <div>
+                <label for="resume">Resume:</label>
+                <textarea name="resume" id="resume" required></textarea>
+            </div>
+            <div>
+                <label for="job_desc">Job Description:</label>
+                <textarea name="job_desc" id="job_desc" required></textarea>
+            </div>
+            <button type="submit">Match</button>
+        </form>
 
-    <input type="submit" value="Match Score">
-  </form>
+        {% if similarity is not none %}
+            <div class="result">
+                <h2>Similarity Score: {{ similarity }}</h2>
+            </div>
+        {% endif %}
+    </div>
 
-  {% if score %}
-    <h3>Similarity Score: {{ score }}%</h3>
-  {% endif %}
 </body>
 </html>

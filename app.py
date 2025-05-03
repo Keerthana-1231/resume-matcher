@@ -1,17 +1,30 @@
+from flask import Flask, render_template, request
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Example resume and job description text
-resume = """Experienced Python developer with strong knowledge in data analysis, pandas, and web development using Flask. Skilled in creating web applications and managing databases."""
-job_desc = """Looking for a Python developer skilled in Flask, APIs, and data processing using pandas. Experience with databases and web app development is a plus."""
+app = Flask(__name__)
 
-# Convert text to numbers using TF-IDF Vectorizer
-vectorizer = TfidfVectorizer()
-vectors = vectorizer.fit_transform([resume, job_desc])
+# Route to show the resume matcher form
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-# Calculate cosine similarity between the resume and job description
-similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
+# Route to handle the form submission
+@app.route('/match', methods=['POST'])
+def match():
+    # Get resume and job description from the form
+    resume = request.form['resume']
+    job_desc = request.form['job_desc']
 
-# Output the similarity percentage
-print(f"Resume Match Score: {round(similarity * 100, 2)}%")
+    # Create TF-IDF Vectorizer and transform the input texts
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform([resume, job_desc])
+    
+    # Calculate the cosine similarity
+    similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
 
+    # Return the similarity score to the user
+    return render_template('index.html', similarity=similarity[0][0])
+
+if __name__ == '__main__':
+    app.run(debug=True)
